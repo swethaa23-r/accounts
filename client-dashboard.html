@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<script>
+// Authentication Guard
+(function(){
+    const isLoggedIn = localStorage.getItem('isLoggedIn');
+    const role = localStorage.getItem('userRole');
+    if(isLoggedIn !== 'true') {
+        window.location.href = 'login.html';
+    } else {
+        const pageName = window.location.pathname.split('/').pop() || 'admin-dashboard.html';
+        if(pageName.includes('admin') && role !== 'admin') {
+            window.location.href = 'client-dashboard.html';
+        } else if(pageName.includes('client') && role !== 'client') {
+            window.location.href = 'admin-dashboard.html';
+        }
+    }
+})();
+</script>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Client Portal | Accounting</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+<link href="css/style.css" rel="stylesheet"/>
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body style="margin:0; padding:0; box-sizing:border-box;">
+<div class="dash-layout-mega">
+<div class="dash-mobile-overlay-mega" id="dashOverlay" onclick="document.getElementById('sidebar').classList.remove('open'); this.style.display='none';"></div>
+<aside class="dash-sidebar-mega" id="sidebar">
+<a class="logo" href="index.html"><img alt="Logo" src="logo-blue.webp" class="responsive-logo"/></a>
+<nav class="dash-nav-mega">
+<a class="dash-nav-item-mega active" href="#" onclick="switchTab(event, 'overview')"><i class="fa-solid fa-border-all"></i> Dashboard</a>
+<a class="dash-nav-item-mega" href="#" onclick="switchTab(event, 'financial')"><i class="fa-solid fa-chart-line"></i> Financials</a>
+<a class="dash-nav-item-mega" href="#" onclick="switchTab(event, 'invoices')"><i class="fa-solid fa-file-invoice-dollar"></i> Invoices</a>
+<a class="dash-nav-item-mega" href="#" onclick="switchTab(event, 'transactions')"><i class="fa-solid fa-money-bill-transfer"></i> Transactions</a>
+<a class="dash-nav-item-mega" href="#" onclick="switchTab(event, 'reports')"><i class="fa-solid fa-chart-bar"></i> Reports</a>
+<a class="dash-nav-item-mega" href="#" onclick="switchTab(event, 'documents')"><i class="fa-solid fa-folder-open"></i> Documents</a>
+<a class="dash-nav-item-mega" href="#" onclick="switchTab(event, 'messages')"><i class="fa-solid fa-envelope"></i> Messages</a>
+<a class="dash-nav-item-mega" href="#" onclick="switchTab(event, 'settings')"><i class="fa-solid fa-gear"></i> Settings</a>
+<a class="dash-nav-item-mega" href="#" onclick="switchTab(event, 'logout')" style="margin-top:20px; color:#fca5a5;"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+</nav>
+</aside>
+<div class="dash-main-mega">
+<header class="dash-header-mega">
+<div style="display:flex; align-items:center; gap:20px;">
+<button aria-label="Action" class="dashboard-mobile-toggle" style="background:none; border:none; font-size:1.5rem; color:var(--text-main); cursor:pointer;" onclick="document.getElementById('sidebar').classList.add('open'); document.getElementById('dashOverlay').style.display='block';"><i class="fa-solid fa-bars"></i></button>
+<a href="index.html" class="dash-mobile-logo"><img alt="Logo" src="logo-blue.webp" style="height: 30px; width: auto;"/></a>
+<form class="dash-header-search-mega" data-success-action="404" novalidate="novalidate">
+<i class="fa-solid fa-magnifying-glass" style="color:var(--text-light);"></i>
+<input data-custom-required="true" id="dynamicField_client-dashboard_1" placeholder="Search resources, clients, reports..." type="text" data-custom-required="true"/>
+</form>
+</div>
+<div style="display:flex; align-items:center; gap:20px;">
+<i class="fa-solid fa-bell" onclick="window.location.href='404.html'" style="font-size:1.2rem; color:var(--text-light); cursor:pointer;"></i>
+<div style="display:flex; align-items:center; gap:10px;">
+<i class="fa-solid fa-circle-user" style="font-size:2rem; color:var(--primary);"></i>
+<span id="profileNameDisplay" style="font-weight:600; font-size:0.95rem;">Admin User</span>
+</div>
+</div>
+</header>
+<div class="dash-body-mega">
+<div class="dash-section-mega active" id="overview">
+<h2 style="margin-bottom:1.5rem; color:#0f172a;">Welcome back!</h2>
+<div class="dash-grid-4-mega">
+<div class="dash-card-mega"><div class="dash-card-title-mega">Outstanding Balance</div><div class="dash-card-value-mega">$4,500</div><div style="color:orange; font-size:0.85rem;">Due Nov 20</div></div>
+<div class="dash-card-mega"><div class="dash-card-title-mega">Net Profit (YTD)</div><div class="dash-card-value-mega">$86.2k</div><div style="color:green; font-size:0.85rem;"><i class="fa-solid fa-arrow-up"></i> 15% YoY</div></div>
+<div class="dash-card-mega"><div class="dash-card-title-mega">Total Invoices</div><div class="dash-card-value-mega">12</div><div style="color:gray; font-size:0.85rem;">This Year</div></div>
+<div class="dash-card-mega"><div class="dash-card-title-mega">Tax Prep Status</div><div class="dash-card-value-mega" style="font-size:1.4rem;">On Track</div></div>
+</div>
+<div class="dash-grid-2-mega">
+<div class="dash-card-mega"><h3>YTD Revenue Summary</h3><div style="height:250px; background:white; position:relative;"><canvas id="clientRevenueChart"></canvas></div></div>
+<div class="dash-card-mega"><h3>Expense Breakdown</h3><div style="height:250px; background:white; position:relative;"><canvas id="clientExpenseChart"></canvas></div></div>
+</div>
+<div class="dash-grid-2-mega">
+<div class="dash-card-mega">
+<h3>Pending Tasks</h3>
+<div class="dash-stacked-form">
+<div style="display:flex; justify-content:space-between; padding:10px; background:#fff7ed; border-left:4px solid #f97316; border-radius:4px;">
+<span>Pay Invoice #INV-9921</span><button class="action-btn action-edit" onclick="window.location.href='404.html'" style="padding:4px 8px;" type="button">Pay Now</button>
+</div>
+</div>
+</div>
+<div class="dash-card-mega" style="display:flex; align-items:center; gap:20px;">
+<i class="fa-solid fa-headset" style="font-size:3rem; color:var(--primary);"></i>
+<div>
+<h3 style="margin-bottom:5px;">Your Advisor</h3>
+<p style="color:var(--text-light); font-size:0.95rem; margin:0;">Have a question? Reach out via Messages.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="dash-section-mega" id="financial">
+<h2 style="margin-bottom:1.5rem;">Financial Overview</h2>
+<div class="dash-grid-3-mega">
+<div class="dash-card-mega"><div class="dash-card-title-mega">Gross Revenue</div><div class="dash-card-value-mega">$150,000</div></div>
+<div class="dash-card-mega"><div class="dash-card-title-mega">Operating Expenses</div><div class="dash-card-value-mega" style="color:#b91c1c;">$63,800</div></div>
+<div class="dash-card-mega"><div class="dash-card-title-mega">Net Profit</div><div class="dash-card-value-mega" style="color:green;">$86,200</div></div>
+</div>
+</div>
+<div class="dash-section-mega" id="invoices">
+<h2 style="margin-bottom:1.5rem;">My Invoices</h2>
+<form class="dash-card-mega" data-success-action="404" novalidate="novalidate" class="dash-inline-form">
+<input id="dynamicField_client-dashboard_2" placeholder="Search Invoices..." style="padding:8px 12px; border:1px solid #ccc; border-radius:4px; flex:1;" type="text" data-custom-required="true"/>
+<button class="action-btn action-view" style="padding:8px 20px;" type="submit">Filter</button>
+</form>
+<div class="dash-card-mega table-wrap-mega">
+<h3>Invoice History</h3>
+<table class="dash-table-mega">
+<tr><th>ID</th><th>Amount</th><th>Status</th><th>Actions</th></tr>
+<tr><td>#INV-9921</td><td>$4,500.00</td><td><span class="badge badge-warning">Pending</span></td><td><button class="action-btn action-edit" onclick="window.location.href='404.html'" type="button">Pay</button></td></tr>
+</table>
+</div>
+</div>
+<div class="dash-section-mega" id="transactions">
+<h2 style="margin-bottom:1.5rem;">Transaction History</h2>
+<form class="dash-card-mega" data-success-action="404" novalidate="novalidate" class="dash-inline-form">
+<input id="dynamicField_client-dashboard_3" placeholder="Search Transactions..." style="padding:8px 12px; border:1px solid #ccc; border-radius:4px; flex:1;" type="text" data-custom-required="true"/>
+<select id="dynamicField_client-dashboard_4" style="padding:8px 12px; border:1px solid #ccc; border-radius:4px;" data-custom-required="true"><option>All Categories</option></select>
+<button class="action-btn action-view" style="padding:8px 20px;" type="submit">Search</button>
+</form>
+<div class="dash-card-mega table-wrap-mega">
+<h3>Recent Transactions</h3>
+<table class="dash-table-mega">
+<tr><th>ID</th><th>Category</th><th>Amount</th></tr>
+<tr><td>#TRX-101</td><td>Consulting</td><td style="color:green;">+$4,200.00</td></tr>
+</table>
+</div>
+</div>
+<div class="dash-section-mega" id="reports">
+<h2 style="margin-bottom:1.5rem;">My Reports</h2>
+<div class="dash-card-mega">
+<h3>Generate Custom Report</h3>
+<form data-success-action="404" novalidate="novalidate" class="dash-inline-form">
+<input data-custom-required="true" id="dynamicField_client-dashboard_5" style="padding:8px 12px; border:1px solid #ccc; border-radius:4px;" type="date" data-custom-required="true"/>
+<button class="action-btn action-edit" style="padding:8px 20px;" type="submit">Generate</button>
+</form>
+</div>
+  <div class="dash-card-mega table-wrap-mega" style="margin-top: 2rem;">
+      <h3>Recent Reports</h3>
+      <div class="dash-table-wrapper-mega">
+          <table>
+              <tr><th>Report Type</th><th>Date</th><th>Status</th><th>Download</th></tr>
+              <tr><td>Tax Summary 2026</td><td>Nov 10, 2026</td><td><span class="badge badge-success">Ready</span></td><td><button aria-label="Action" class="action-btn action-view" onclick="window.location.href='404.html'" type="button"><i class="fa-solid fa-download"></i></button></td></tr>
+              <tr><td>P&L Statement Q2</td><td>Jul 15, 2026</td><td><span class="badge badge-success">Ready</span></td><td><button aria-label="Action" class="action-btn action-view" onclick="window.location.href='404.html'" type="button"><i class="fa-solid fa-download"></i></button></td></tr>
+          </table>
+      </div>
+  </div>
+  <div class="dash-grid-2-mega" style="margin-top: 2rem;">
+      <div class="dash-card-mega">
+          <h3>Tax Documents</h3>
+          <ul style="list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:10px;">
+              <li style="padding:10px; border-left:3px solid var(--primary); background:#f8fafc;">1099-MISC Forms</li>
+              <li style="padding:10px; border-left:3px solid var(--primary); background:#f8fafc;">W-2 Copies</li>
+          </ul>
+      </div>
+      <div class="dash-card-mega">
+          <h3>Financial Insights</h3>
+          <div style="padding:15px; background:rgba(0,102,255,0.05); border-radius:8px; border:1px solid rgba(0,102,255,0.1);">
+              <p style="margin:0; font-size:0.95rem; color:var(--text-main);"><strong>Tip:</strong> Your operating expenses are down 12% compared to last quarter. Great job optimizing costs!</p>
+          </div>
+      </div>
+  </div>
+
+</div>
+<div class="dash-section-mega" id="documents">
+<h2 style="margin-bottom:1.5rem;">Document Center</h2>
+<div class="dash-card-mega" style="border: 2px dashed #cbd5e1; text-align:center; padding:3rem 1rem;">
+<i class="fa-solid fa-cloud-arrow-up" style="font-size:3rem; color:var(--text-light); margin-bottom:1rem;"></i>
+<h3>Drag &amp; Drop Documents Here</h3>
+<button class="action-btn action-view" onclick="window.location.href='404.html'" type="button">Browse Files</button>
+</div>
+<div class="dash-card-mega table-wrap-mega">
+<h3>Secure Files</h3>
+<table class="dash-table-mega">
+<tr><th>File Name</th><th>Actions</th></tr>
+<tr><td>ID_Verification.pdf</td><td><button class="action-btn action-view" onclick="window.location.href='404.html'" type="button">View</button></td></tr>
+</table>
+</div>
+</div>
+<div class="dash-section-mega" id="messages">
+<h2 style="margin-bottom:1.5rem;">Secure Messages</h2>
+<div class="dash-card-mega">
+<h3>Chat with Advisor</h3>
+<form data-success-action="404" novalidate="novalidate" style="display:flex; gap:10px; margin-top:20px;">
+<input data-custom-required="true" id="dynamicField_client-dashboard_6" placeholder="Type a message..." style="flex:1; padding:10px; border:1px solid #ccc; border-radius:4px;" type="text" data-custom-required="true"/>
+<button class="action-btn action-view" style="padding:0 20px;" type="submit">Send</button>
+</form>
+</div>
+  <div class="dash-card-mega" style="margin-top: 2rem;">
+      <h3>Recent Conversations</h3>
+      <div style="display:flex; flex-direction:column; gap:15px; margin-top:10px;">
+          <div style="padding:15px; background:#f8fafc; border-radius:8px; display:flex; justify-content:space-between; align-items:flex-start;">
+              <div>
+                  <h4 style="margin:0 0 5px 0; font-size:1rem;">Support Team</h4>
+                  <p style="margin:0; color:var(--text-light); font-size:0.9rem;">Your requested tax documents have been uploaded.</p>
+              </div>
+              <span style="font-size:0.8rem; color:var(--text-light);">2 hrs ago</span>
+          </div>
+          <div style="padding:15px; background:#f8fafc; border-radius:8px; display:flex; justify-content:space-between; align-items:flex-start;">
+              <div>
+                  <h4 style="margin:0 0 5px 0; font-size:1rem;">Account Manager</h4>
+                  <p style="margin:0; color:var(--text-light); font-size:0.9rem;">Please review the draft Q3 report when you have a moment.</p>
+              </div>
+              <span style="font-size:0.8rem; color:var(--text-light);">Yesterday</span>
+          </div>
+      </div>
+  </div>
+  <div class="dash-grid-2-mega" style="margin-top: 2rem;">
+      <div class="dash-card-mega">
+          <h3>Important Announcements</h3>
+          <div style="padding:15px; border-left:4px solid var(--accent); background:#fff; box-shadow:0 2px 4px rgba(0,0,0,0.05);">
+              <h4 style="margin:0 0 5px 0;">Year-End Processing</h4>
+              <p style="margin:0; font-size:0.85rem; color:var(--text-light);">Please submit all pending invoices by Dec 15th for processing.</p>
+          </div>
+      </div>
+      <div class="dash-card-mega">
+          <h3>Shared Files</h3>
+          <ul style="list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:10px;">
+              <li style="padding:10px; background:#f8fafc; border-radius:6px; display:flex; align-items:center; gap:10px;"><i class="fa-solid fa-file-pdf" style="color:#ef4444;"></i> Q3_Draft.pdf</li>
+              <li style="padding:10px; background:#f8fafc; border-radius:6px; display:flex; align-items:center; gap:10px;"><i class="fa-solid fa-file-excel" style="color:#10b981;"></i> Expense_Sheet.xlsx</li>
+          </ul>
+      </div>
+  </div>
+
+</div>
+<div class="dash-section-mega" id="settings">
+<h2 style="margin-bottom:1.5rem;">Account Settings</h2>
+<div class="dash-grid-2-mega">
+<form class="dash-card-mega" data-success-action="profile_success" novalidate="novalidate">
+<h3>Profile Preferences</h3>
+<div class="dash-stacked-form">
+<label>Full Name</label><input data-custom-required="true" id="dynamicField_client-dashboard_7" style="padding:8px; border:1px solid #ccc; border-radius:4px;" type="text" value="Elena Rodriguez"/>
+<label>Contact Email</label><input data-custom-required="true" id="dynamicField_client-dashboard_8" style="padding:8px; border:1px solid #ccc; border-radius:4px;" type="email" value="elena@techflow.com"/>
+<button class="action-btn action-view" style="width:120px;" type="submit">Save Changes</button>
+</div>
+</form>
+<form class="dash-card-mega" data-success-action="password_success" novalidate="novalidate">
+<h3>Security &amp; Password</h3>
+<div class="dash-stacked-form">
+<label>Current Password</label><input data-custom-required="true" id="dynamicField_client-dashboard_9" style="padding:8px; border:1px solid #ccc; border-radius:4px;" type="password"/>
+<label>New Password</label><input data-custom-required="true" id="dynamicField_client-dashboard_10" style="padding:8px; border:1px solid #ccc; border-radius:4px;" type="password"/>
+<button class="action-btn action-edit" style="width:150px;" type="submit">Update Password</button>
+</div>
+</form>
+</div>
+<div class="dash-card-mega">
+<h3>Two-Factor Authentication (2FA)</h3>
+<button class="action-btn action-edit" onclick="window.location.href='404.html'" type="button">Enable 2FA</button>
+</div>
+</div>
+<div class="dash-section-mega" id="logout">
+<div style="text-align:center; padding:5rem 0;">
+<i class="fa-solid fa-spinner fa-spin" style="font-size:3rem; color:var(--primary); margin-bottom:1rem;"></i>
+<h2>Logging Out...</h2>
+</div>
+</div>
+</div>
+</div>
+</div>
+<script>
+    const storedName = localStorage.getItem('stacklyUserName');
+    if(storedName) { document.getElementById('profileNameDisplay').innerText = storedName; }
+
+    function switchTab(event, tabId) {
+        if(event) event.preventDefault();
+        
+        document.querySelectorAll('.dash-section-mega').forEach(sec => sec.classList.remove('active'));
+        
+        const target = document.getElementById(tabId);
+        if(target) { setTimeout(() => target.classList.add('active'), 10); }
+        
+        if(event && event.currentTarget.classList.contains('dash-nav-item-mega')) {
+            document.querySelectorAll('.dash-nav-item-mega').forEach(nav => nav.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+        }
+        
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('dashOverlay');
+        if(sidebar && sidebar.classList.contains('open')) {
+            sidebar.classList.remove('open');
+            if(overlay) overlay.style.display = 'none';
+        }
+        
+        if(tabId === 'logout') { setTimeout(() => { window.location.href = 'login.html'; }, 1000); }
+    }
+    
+    // Client Charts
+    const revCtx = document.getElementById('clientRevenueChart');
+    if(revCtx) {
+        new Chart(revCtx, {
+            type: 'line',
+            data: {
+                labels: ['Q1', 'Q2', 'Q3', 'Q4'],
+                datasets: [{ label: 'Revenue', data: [35000, 42000, 38000, 50000], borderColor: '#2563eb', tension: 0.4 }]
+            },
+            options: { responsive: true, maintainAspectRatio: false }
+        });
+    }
+    const expCtx = document.getElementById('clientExpenseChart');
+    if(expCtx) {
+        new Chart(expCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Software', 'Consulting', 'Operations'],
+                datasets: [{ data: [45, 25, 30], backgroundColor: ['#3b82f6', '#10b981', '#f59e0b'] }]
+            },
+            options: { responsive: true, maintainAspectRatio: false }
+        });
+    }
+
+    </script>
+<script src="js/main.js"></script>
+<script src="js/dashboard.js"></script>
+</body>
+</html>

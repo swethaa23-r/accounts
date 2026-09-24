@@ -14,15 +14,32 @@
 
 <!-- Preloader -->
 <div id="preloader">
-    <div class="preloader-content">
-        <div class="preloader-logo-wrapper">
-            <div class="preloader-glow"></div>
-            <img src="logo-blue.webp" alt="Stackly Logo" class="preloader-logo">
+    <div class="ring-preloader-v2">
+        <div class="progress-ring-container">
+            <svg class="progress-ring" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet">
+                <circle class="progress-ring__background" stroke="#e2e8f0" stroke-width="5" fill="transparent" r="45" cx="50" cy="50"/>
+                <circle class="progress-ring__circle" stroke="var(--primary)" stroke-width="5" fill="transparent" r="45" cx="50" cy="50"/>
+            </svg>
+            <div class="progress-text-v2"><span id="progress-percent">0</span>%</div>
         </div>
-        <div class="preloader-bar-container">
-            <div class="preloader-bar"></div>
-        </div>
+        <img src="logo-blue.webp" alt="Stackly Logo" class="preloader-logo-v2">
     </div>
+    <script>
+        (function(){
+            let pct = document.getElementById('progress-percent');
+            let start = null;
+            function step(timestamp) {
+                if (!start) start = timestamp;
+                let progress = timestamp - start;
+                let val = Math.min(Math.floor((progress / 1200) * 100), 100);
+                if (pct) pct.innerText = val;
+                if (progress < 1200) {
+                    window.requestAnimationFrame(step);
+                }
+            }
+            window.requestAnimationFrame(step);
+        })();
+    </script>
 </div>
 
 <div style="position: absolute; top: 20px; left: 20px;">

@@ -28,10 +28,10 @@ if (!localStorage.getItem('stackly_users_v2')) {
         };
 
         // Remove on window load
-        window.addEventListener('load', removePreloader);
+        
 
         // Fallback: Remove after 2.5 seconds max to prevent infinite loading
-        setTimeout(removePreloader, 2500);
+        setTimeout(removePreloader, 1200);
     }
 })();
 

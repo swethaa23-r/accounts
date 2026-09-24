@@ -20,15 +20,32 @@
 
 <!-- Preloader -->
 <div id="preloader">
-    <div class="preloader-content">
-        <div class="preloader-logo-wrapper">
-            <div class="preloader-glow"></div>
-            <img src="logo-blue.webp" alt="Stackly Logo" class="preloader-logo">
+    <div class="ring-preloader-v2">
+        <div class="progress-ring-container">
+            <svg class="progress-ring" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet">
+                <circle class="progress-ring__background" stroke="#e2e8f0" stroke-width="5" fill="transparent" r="45" cx="50" cy="50"/>
+                <circle class="progress-ring__circle" stroke="var(--primary)" stroke-width="5" fill="transparent" r="45" cx="50" cy="50"/>
+            </svg>
+            <div class="progress-text-v2"><span id="progress-percent">0</span>%</div>
         </div>
-        <div class="preloader-bar-container">
-            <div class="preloader-bar"></div>
-        </div>
+        <img src="logo-blue.webp" alt="Stackly Logo" class="preloader-logo-v2">
     </div>
+    <script>
+        (function(){
+            let pct = document.getElementById('progress-percent');
+            let start = null;
+            function step(timestamp) {
+                if (!start) start = timestamp;
+                let progress = timestamp - start;
+                let val = Math.min(Math.floor((progress / 1200) * 100), 100);
+                if (pct) pct.innerText = val;
+                if (progress < 1200) {
+                    window.requestAnimationFrame(step);
+                }
+            }
+            window.requestAnimationFrame(step);
+        })();
+    </script>
 </div>
 
 <header class="navbar">
@@ -129,6 +146,70 @@
 <div id="pagination" style="display:flex; justify-content:center; gap:0.5rem; margin-top:3rem;"></div>
 </div>
 </section>
+<!-- Additional Section 1: Upcoming Webinars -->
+<section class="section section-white">
+<div class="container" data-aos="fade-up">
+<div style="text-align:center; margin-bottom: 3rem;">
+<h2>Upcoming Webinars</h2>
+<p style="color:var(--text-light); max-width:600px; margin:0 auto;">Join our live sessions with financial experts.</p>
+</div>
+<div class="grid-2">
+<div class="card" style="display:flex; gap:1.5rem; align-items:center;">
+<div style="width:80px; height:80px; background:var(--accent); color:white; border-radius:var(--radius); display:flex; flex-direction:column; align-items:center; justify-content:center; flex-shrink:0;">
+<span style="font-size:1.5rem; font-weight:700;">24</span>
+<span style="font-size:0.85rem; text-transform:uppercase;">Oct</span>
+</div>
+<div>
+<h4 style="margin:0 0 0.5rem 0; font-size:1.25rem;">Tax Optimization for Q4</h4>
+<p style="margin:0; color:var(--text-light); font-size:0.95rem;">Learn how to prepare your business for year-end tax planning.</p>
+<a href="404.html" style="font-size:0.9rem; font-weight:600; margin-top:0.5rem; display:inline-block;">Register Now <i class="fa-solid fa-arrow-right"></i></a>
+</div>
+</div>
+<div class="card" style="display:flex; gap:1.5rem; align-items:center;">
+<div style="width:80px; height:80px; background:var(--accent); color:white; border-radius:var(--radius); display:flex; flex-direction:column; align-items:center; justify-content:center; flex-shrink:0;">
+<span style="font-size:1.5rem; font-weight:700;">05</span>
+<span style="font-size:0.85rem; text-transform:uppercase;">Nov</span>
+</div>
+<div>
+<h4 style="margin:0 0 0.5rem 0; font-size:1.25rem;">Global Accounting Standards</h4>
+<p style="margin:0; color:var(--text-light); font-size:0.95rem;">Navigating compliance across international markets.</p>
+<a href="404.html" style="font-size:0.9rem; font-weight:600; margin-top:0.5rem; display:inline-block;">Register Now <i class="fa-solid fa-arrow-right"></i></a>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- Additional Section 2: Financial Resources -->
+<section class="section section-light">
+<div class="container" data-aos="fade-up">
+<div style="text-align:center; margin-bottom: 3rem;">
+<h2>Downloadable Resources</h2>
+<p style="color:var(--text-light); max-width:600px; margin:0 auto;">Free tools and guides to help you manage your finances.</p>
+</div>
+<div class="grid-3">
+<div class="card" style="text-align:center;">
+<i class="fa-solid fa-file-pdf" style="font-size:2.5rem; color:var(--error); margin-bottom:1rem;"></i>
+<h4>2026 Tax Guide</h4>
+<p style="color:var(--text-light); font-size:0.95rem;">Comprehensive guide to corporate tax changes.</p>
+<a class="btn btn-outline" href="404.html" style="margin-top:1rem;">Download PDF</a>
+</div>
+<div class="card" style="text-align:center;">
+<i class="fa-solid fa-file-excel" style="font-size:2.5rem; color:var(--success); margin-bottom:1rem;"></i>
+<h4>Expense Tracker</h4>
+<p style="color:var(--text-light); font-size:0.95rem;">Automated spreadsheet for tracking daily expenses.</p>
+<a class="btn btn-outline" href="404.html" style="margin-top:1rem;">Download Excel</a>
+</div>
+<div class="card" style="text-align:center;">
+<i class="fa-solid fa-file-pdf" style="font-size:2.5rem; color:var(--accent); margin-bottom:1rem;"></i>
+<h4>Audit Checklist</h4>
+<p style="color:var(--text-light); font-size:0.95rem;">Prepare your business for a seamless internal audit.</p>
+<a class="btn btn-outline" href="404.html" style="margin-top:1rem;">Download PDF</a>
+</div>
+</div>
+</div>
+</section>
+
 <!-- Newsletter / CTA -->
 <section class="section section-primary" style="background:var(--primary); padding:4rem 0; margin-top:2rem;">
 <div class="container">

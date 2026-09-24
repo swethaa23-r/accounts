@@ -20,15 +20,32 @@
 
 <!-- Preloader -->
 <div id="preloader">
-    <div class="preloader-content">
-        <div class="preloader-logo-wrapper">
-            <div class="preloader-glow"></div>
-            <img src="logo-blue.webp" alt="Stackly Logo" class="preloader-logo">
+    <div class="ring-preloader-v2">
+        <div class="progress-ring-container">
+            <svg class="progress-ring" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet">
+                <circle class="progress-ring__background" stroke="#e2e8f0" stroke-width="5" fill="transparent" r="45" cx="50" cy="50"/>
+                <circle class="progress-ring__circle" stroke="var(--primary)" stroke-width="5" fill="transparent" r="45" cx="50" cy="50"/>
+            </svg>
+            <div class="progress-text-v2"><span id="progress-percent">0</span>%</div>
         </div>
-        <div class="preloader-bar-container">
-            <div class="preloader-bar"></div>
-        </div>
+        <img src="logo-blue.webp" alt="Stackly Logo" class="preloader-logo-v2">
     </div>
+    <script>
+        (function(){
+            let pct = document.getElementById('progress-percent');
+            let start = null;
+            function step(timestamp) {
+                if (!start) start = timestamp;
+                let progress = timestamp - start;
+                let val = Math.min(Math.floor((progress / 1200) * 100), 100);
+                if (pct) pct.innerText = val;
+                if (progress < 1200) {
+                    window.requestAnimationFrame(step);
+                }
+            }
+            window.requestAnimationFrame(step);
+        })();
+    </script>
 </div>
 
 <!-- Header / Navbar -->
@@ -189,6 +206,66 @@
 </div>
 </div>
 </section>
+<!-- 3. Industries We Serve -->
+<section class="section section-dark">
+<div class="container" data-aos="fade-up">
+<div style="text-align:center; margin-bottom: 3rem;">
+<h2 style="color:white;">Industries We Serve</h2>
+<p style="color:#8892B0; max-width:600px; margin:0 auto;">Specialized financial expertise tailored to your specific industry's unique challenges.</p>
+</div>
+<div class="grid-4">
+<div class="card" style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:white; padding:1.5rem; text-align:center;">
+<i class="fa-solid fa-laptop-code" style="font-size:2rem; color:var(--accent); margin-bottom:1rem;"></i>
+<h4 style="color:white; margin:0;">Technology</h4>
+</div>
+<div class="card" style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:white; padding:1.5rem; text-align:center;">
+<i class="fa-solid fa-building" style="font-size:2rem; color:var(--accent); margin-bottom:1rem;"></i>
+<h4 style="color:white; margin:0;">Real Estate</h4>
+</div>
+<div class="card" style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:white; padding:1.5rem; text-align:center;">
+<i class="fa-solid fa-stethoscope" style="font-size:2rem; color:var(--accent); margin-bottom:1rem;"></i>
+<h4 style="color:white; margin:0;">Healthcare</h4>
+</div>
+<div class="card" style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:white; padding:1.5rem; text-align:center;">
+<i class="fa-solid fa-store" style="font-size:2rem; color:var(--accent); margin-bottom:1rem;"></i>
+<h4 style="color:white; margin:0;">Retail</h4>
+</div>
+</div>
+</div>
+</section>
+
+<!-- 4. How We Work -->
+<section class="section section-white">
+<div class="container" data-aos="fade-up">
+<div style="text-align:center; margin-bottom: 3rem;">
+<h2>Our Service Process</h2>
+<p style="color:var(--text-light); max-width:600px; margin:0 auto;">A seamless onboarding and execution process designed for minimal disruption.</p>
+</div>
+<div class="timeline">
+<div class="timeline-step">
+<div class="timeline-icon">1</div>
+<h4>Consultation</h4>
+<p style="color:var(--text-light); font-size:0.95rem;">Initial meeting to assess needs.</p>
+</div>
+<div class="timeline-step">
+<div class="timeline-icon">2</div>
+<h4>Strategy</h4>
+<p style="color:var(--text-light); font-size:0.95rem;">Custom financial roadmap.</p>
+</div>
+<div class="timeline-step">
+<div class="timeline-icon">3</div>
+<h4>Execution</h4>
+<p style="color:var(--text-light); font-size:0.95rem;">Implementing the solution.</p>
+</div>
+<div class="timeline-step">
+<div class="timeline-icon">4</div>
+<h4>Review</h4>
+<p style="color:var(--text-light); font-size:0.95rem;">Ongoing support &amp; reporting.</p>
+</div>
+</div>
+</div>
+</section>
+
 <!-- CTA Section -->
 <section class="section section-white">
 <div class="container" data-aos="zoom-in" style="text-align:center; padding: 5rem 3rem; background:var(--bg-main); border-radius:var(--radius-lg); border:1px solid var(--border);">

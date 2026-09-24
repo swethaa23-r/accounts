@@ -20,15 +20,32 @@
 
 <!-- Preloader -->
 <div id="preloader">
-    <div class="preloader-content">
-        <div class="preloader-logo-wrapper">
-            <div class="preloader-glow"></div>
-            <img src="logo-blue.webp" alt="Stackly Logo" class="preloader-logo">
+    <div class="ring-preloader-v2">
+        <div class="progress-ring-container">
+            <svg class="progress-ring" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet">
+                <circle class="progress-ring__background" stroke="#e2e8f0" stroke-width="5" fill="transparent" r="45" cx="50" cy="50"/>
+                <circle class="progress-ring__circle" stroke="var(--primary)" stroke-width="5" fill="transparent" r="45" cx="50" cy="50"/>
+            </svg>
+            <div class="progress-text-v2"><span id="progress-percent">0</span>%</div>
         </div>
-        <div class="preloader-bar-container">
-            <div class="preloader-bar"></div>
-        </div>
+        <img src="logo-blue.webp" alt="Stackly Logo" class="preloader-logo-v2">
     </div>
+    <script>
+        (function(){
+            let pct = document.getElementById('progress-percent');
+            let start = null;
+            function step(timestamp) {
+                if (!start) start = timestamp;
+                let progress = timestamp - start;
+                let val = Math.min(Math.floor((progress / 1200) * 100), 100);
+                if (pct) pct.innerText = val;
+                if (progress < 1200) {
+                    window.requestAnimationFrame(step);
+                }
+            }
+            window.requestAnimationFrame(step);
+        })();
+    </script>
 </div>
 
 <!-- Header / Navbar -->
@@ -250,7 +267,34 @@
 </div>
 </div>
 </section>
-<!-- 8. CTA -->
+<!-- 8. Our Approach -->
+<section class="section section-light">
+<div class="container" data-aos="fade-up">
+<div style="text-align:center; margin-bottom: 2rem;">
+<h2>Our Approach</h2>
+<p style="max-width:600px; margin:0 auto; color:var(--text-light);">We combine traditional financial wisdom with modern technology to deliver the best results.</p>
+</div>
+<div class="grid-3">
+<div class="card" style="text-align:center;">
+<i class="fa-solid fa-chart-line" style="font-size:2rem; color:var(--accent); margin-bottom:1rem;"></i>
+<h3>Data-Driven</h3>
+<p style="color:var(--text-light); font-size:0.95rem;">Every piece of advice we provide is backed by hard numbers and thorough market analysis.</p>
+</div>
+<div class="card" style="text-align:center;">
+<i class="fa-solid fa-users" style="font-size:2rem; color:var(--accent); margin-bottom:1rem;"></i>
+<h3>Client-Centric</h3>
+<p style="color:var(--text-light); font-size:0.95rem;">Your unique business goals form the foundation of our entire financial strategy.</p>
+</div>
+<div class="card" style="text-align:center;">
+<i class="fa-solid fa-shield-halved" style="font-size:2rem; color:var(--accent); margin-bottom:1rem;"></i>
+<h3>Risk Management</h3>
+<p style="color:var(--text-light); font-size:0.95rem;">We proactively identify and mitigate financial risks before they impact your bottom line.</p>
+</div>
+</div>
+</div>
+</section>
+
+<!-- 9. CTA -->
 <section class="section">
 <div class="container">
 <div class="bg-animated" data-aos="zoom-in" style="text-align:center; padding: 6rem 3rem; border-radius:var(--radius-lg); box-shadow:var(--shadow-lg);">

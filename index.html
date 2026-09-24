@@ -20,15 +20,32 @@
 
 <!-- Preloader -->
 <div id="preloader">
-    <div class="preloader-content">
-        <div class="preloader-logo-wrapper">
-            <div class="preloader-glow"></div>
-            <img src="logo-blue.webp" alt="Stackly Logo" class="preloader-logo">
+    <div class="ring-preloader-v2">
+        <div class="progress-ring-container">
+            <svg class="progress-ring" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet">
+                <circle class="progress-ring__background" stroke="#e2e8f0" stroke-width="5" fill="transparent" r="45" cx="50" cy="50"/>
+                <circle class="progress-ring__circle" stroke="var(--primary)" stroke-width="5" fill="transparent" r="45" cx="50" cy="50"/>
+            </svg>
+            <div class="progress-text-v2"><span id="progress-percent">0</span>%</div>
         </div>
-        <div class="preloader-bar-container">
-            <div class="preloader-bar"></div>
-        </div>
+        <img src="logo-blue.webp" alt="Stackly Logo" class="preloader-logo-v2">
     </div>
+    <script>
+        (function(){
+            let pct = document.getElementById('progress-percent');
+            let start = null;
+            function step(timestamp) {
+                if (!start) start = timestamp;
+                let progress = timestamp - start;
+                let val = Math.min(Math.floor((progress / 1200) * 100), 100);
+                if (pct) pct.innerText = val;
+                if (progress < 1200) {
+                    window.requestAnimationFrame(step);
+                }
+            }
+            window.requestAnimationFrame(step);
+        })();
+    </script>
 </div>
 
 <!-- Header / Navbar -->
@@ -414,7 +431,8 @@
 <span class="badge badge-success">Tax Planning</span>
 <span style="color:var(--text-light);"><i class="fa-regular fa-calendar" style="margin-right:5px;"></i> Oct 12, 2026</span>
 </div>
-<h3 style="font-size:1.25rem;">Tax Planning Strategies for Growing Businesses</h3>
+<h3 style="font-size:1.25rem;">Tax Planning Strategy for Growing Business</h3>
+<p style="color:var(--text-light); font-size:0.95rem; margin:1rem 0;">Explore essential tax planning strategies specifically tailored for growing businesses. Understand how to properly manage deductions, navigate compliance requirements, and optimize your financial structure. This approach helps reduce tax liabilities and free up capital for further expansion.</p>
 <a class="card-link" href="404.html" onclick="window.location.href='404.html'; return false;" style="margin-top:1rem;">Read More </a>
 </div>
 </div>
@@ -426,6 +444,7 @@
 <span style="color:var(--text-light);"><i class="fa-regular fa-calendar" style="margin-right:5px;"></i> Oct 05, 2026</span>
 </div>
 <h3 style="font-size:1.25rem;">How Accurate Bookkeeping Improves Business Decisions</h3>
+<p style="color:var(--text-light); font-size:0.95rem; margin:1rem 0;">Accurate bookkeeping provides a clear picture of your company's financial health. By maintaining precise records, you can track cash flow effectively and identify key areas for cost savings. These insights empower you to make data-driven decisions that foster long-term growth and stability.</p>
 <a class="card-link" href="404.html" onclick="window.location.href='404.html'; return false;" style="margin-top:1rem;">Read More </a>
 </div>
 </div>
@@ -437,6 +456,7 @@
 <span style="color:var(--text-light);"><i class="fa-regular fa-calendar" style="margin-right:5px;"></i> Sep 28, 2026</span>
 </div>
 <h3 style="font-size:1.25rem;">Financial Planning Mistakes Businesses Should Avoid</h3>
+<p style="color:var(--text-light); font-size:0.95rem; margin:1rem 0;">Many businesses struggle due to avoidable financial planning mistakes. Common errors include poor cash flow management, lack of emergency funds, and ignoring tax implications. Learn how to identify and prevent these pitfalls to safeguard your business's financial future and ensure ongoing success.</p>
 <a class="card-link" href="404.html" onclick="window.location.href='404.html'; return false;" style="margin-top:1rem;">Read More </a>
 </div>
 </div>

@@ -20,15 +20,32 @@
 
 <!-- Preloader -->
 <div id="preloader">
-    <div class="preloader-content">
-        <div class="preloader-logo-wrapper">
-            <div class="preloader-glow"></div>
-            <img src="logo-blue.webp" alt="Stackly Logo" class="preloader-logo">
+    <div class="ring-preloader-v2">
+        <div class="progress-ring-container">
+            <svg class="progress-ring" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet">
+                <circle class="progress-ring__background" stroke="#e2e8f0" stroke-width="5" fill="transparent" r="45" cx="50" cy="50"/>
+                <circle class="progress-ring__circle" stroke="var(--primary)" stroke-width="5" fill="transparent" r="45" cx="50" cy="50"/>
+            </svg>
+            <div class="progress-text-v2"><span id="progress-percent">0</span>%</div>
         </div>
-        <div class="preloader-bar-container">
-            <div class="preloader-bar"></div>
-        </div>
+        <img src="logo-blue.webp" alt="Stackly Logo" class="preloader-logo-v2">
     </div>
+    <script>
+        (function(){
+            let pct = document.getElementById('progress-percent');
+            let start = null;
+            function step(timestamp) {
+                if (!start) start = timestamp;
+                let progress = timestamp - start;
+                let val = Math.min(Math.floor((progress / 1200) * 100), 100);
+                if (pct) pct.innerText = val;
+                if (progress < 1200) {
+                    window.requestAnimationFrame(step);
+                }
+            }
+            window.requestAnimationFrame(step);
+        })();
+    </script>
 </div>
 
 <!-- Header / Navbar -->
@@ -173,6 +190,42 @@
   </div>
   </div>
   </section>
+<!-- FAQ Section -->
+<section class="section section-white">
+<div class="container" data-aos="fade-up">
+<div style="text-align:center; margin-bottom: 3rem;">
+<h2>Frequently Asked Questions</h2>
+<p style="color:var(--text-light); max-width:600px; margin:0 auto;">Find answers to common questions about our services and processes.</p>
+</div>
+<div class="grid-2">
+<div class="card" style="padding:2rem;">
+<h4>What industries do you serve?</h4>
+<p style="color:var(--text-light); margin-bottom:0;">We serve a wide variety of industries including retail, healthcare, technology, and manufacturing.</p>
+</div>
+<div class="card" style="padding:2rem;">
+<h4>How do I get started?</h4>
+<p style="color:var(--text-light); margin-bottom:0;">Simply fill out the contact form above, and one of our experts will reach out to schedule an initial consultation.</p>
+</div>
+<div class="card" style="padding:2rem;">
+<h4>Do you offer remote accounting services?</h4>
+<p style="color:var(--text-light); margin-bottom:0;">Yes, we use cloud-based platforms to seamlessly manage your finances remotely from anywhere.</p>
+</div>
+<div class="card" style="padding:2rem;">
+<h4>What are your fees?</h4>
+<p style="color:var(--text-light); margin-bottom:0;">Our fees depend on the complexity of your needs. We provide a transparent quote after the initial consultation.</p>
+</div>
+</div>
+</div>
+</section>
+
+<!-- Additional Section: Support Center -->
+<section class="section section-dark">
+<div class="container text-center" data-aos="fade-up" style="text-align:center;">
+<h2 style="color:white; margin-bottom:1rem;">Need Immediate Support?</h2>
+<p style="color:#8892B0; max-width:600px; margin:0 auto 2rem auto;">Our dedicated support team is available 24/7 for urgent financial inquiries.</p>
+<a class="btn btn-primary" href="tel:9090909090"><i class="fa-solid fa-phone-volume"></i> Call Support Now</a>
+</div>
+</section>
 </main>
 <!-- Footer -->
 <footer class="footer" style="background-color: #0A192F; color: white; padding-top: 2rem;">

@@ -94,6 +94,7 @@ a:hover { color: var(--accent-hover); }
 }
 .btn-primary:hover { 
   background-color: var(--accent-hover); 
+  color: var(--bg-white);
   transform: translateY(-2px); 
   box-shadow: 0 6px 20px rgba(0, 102, 255, 0.23); 
 }
@@ -1056,68 +1057,73 @@ body.preloader-active {
     transform: translateY(-100%);
     opacity: 0;
 }
-.preloader-content {
+/* Preloader V2 */
+.ring-preloader-v2 {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 2.5rem;
+    justify-content: center;
+    gap: 1.5rem;
 }
-.preloader-logo-wrapper {
+
+.progress-ring-container {
     position: relative;
-    display: inline-flex;
+    width: 100px;
+    height: 100px;
+    display: flex;
     align-items: center;
     justify-content: center;
 }
-.preloader-logo {
-    height: 50px;
-    width: auto;
-    position: relative;
-    z-index: 2;
-    animation: preloaderFloat 3s ease-in-out infinite;
-}
-.preloader-glow {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+
+.progress-ring {
+    transform: rotate(-90deg);
     width: 100px;
     height: 100px;
-    background: var(--primary, #0066ff);
-    filter: blur(40px);
-    opacity: 0.15;
-    z-index: 1;
-    animation: preloaderGlow 2s ease-in-out infinite alternate;
 }
-.preloader-bar-container {
-    width: 150px;
-    height: 3px;
-    background: rgba(0, 102, 255, 0.1);
-    border-radius: 99px;
-    overflow: hidden;
-    position: relative;
+
+.progress-ring__circle {
+    stroke-dasharray: 282.74;
+    stroke-dashoffset: 282.74;
+    stroke-linecap: round;
+    animation: fillRingV2 1.2s linear forwards;
 }
-.preloader-bar {
+
+.progress-text-v2 {
     position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 30%;
-    background: var(--primary, #0066ff);
-    border-radius: 99px;
-    animation: preloaderSlide 1.5s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+    font-weight: 700;
+    color: var(--primary);
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
 }
-@keyframes preloaderFloat {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-8px); }
+
+.preloader-logo-v2 {
+    height: 40px;
+    width: auto;
 }
-@keyframes preloaderGlow {
-    0% { opacity: 0.1; transform: translate(-50%, -50%) scale(0.8); }
-    100% { opacity: 0.25; transform: translate(-50%, -50%) scale(1.2); }
+
+@keyframes fillRingV2 {
+    0% { stroke-dashoffset: 282.74; }
+    100% { stroke-dashoffset: 0; }
 }
-@keyframes preloaderSlide {
-    0% { left: -30%; width: 30%; }
-    50% { width: 60%; }
-    100% { left: 100%; width: 30%; }
+
+@media (max-width: 768px) {
+    .progress-ring-container {
+        width: 80px;
+        height: 80px;
+    }
+    .progress-ring {
+        width: 80px;
+        height: 80px;
+    }
+    .preloader-logo-v2 {
+        height: 32px;
+    }
+    .progress-text-v2 {
+        font-size: 1rem;
+    }
 }
 
 

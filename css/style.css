@@ -579,6 +579,14 @@ img {
 .marquee-track { display: inline-flex; gap: 2rem; animation: marquee 20s linear infinite; }
 .marquee-track:hover { animation-play-state: paused; }
 @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+/* Dashboard Forms */
+.dash-stacked-form { display: flex; flex-direction: column; gap: 15px; }
+.dash-stacked-form label { font-size: 0.95rem; font-weight: 600; color: #1e293b; margin-bottom: -5px; }
+.dash-stacked-form input, .dash-stacked-form select, .dash-stacked-form textarea { width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; font-family: inherit; }
+.dash-inline-form { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.dash-inline-form input, .dash-inline-form select { flex: 1; min-width: 200px; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; font-family: inherit; }
+
 / *   M o b i l e   R e s p o n s i v e n e s s   F i x e s   * / 
  
  

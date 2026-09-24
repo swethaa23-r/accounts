@@ -31,7 +31,7 @@ if (!localStorage.getItem('stackly_users_v2')) {
         
 
         // Fallback: Remove after 2.5 seconds max to prevent infinite loading
-        setTimeout(removePreloader, 1200);
+        setTimeout(removePreloader, 1500);
     }
 })();
 

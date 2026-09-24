@@ -1077,8 +1077,10 @@ body.preloader-active {
 
 .progress-ring {
     transform: rotate(-90deg);
+    transform-origin: center;
     width: 100px;
     height: 100px;
+    overflow: visible;
 }
 
 .progress-ring__circle {
@@ -1101,7 +1103,9 @@ body.preloader-active {
 
 .preloader-logo-v2 {
     height: 40px;
-    width: auto;
+    width: 150px;
+    object-fit: contain;
+    display: block;
 }
 
 @keyframes fillRingV2 {
@@ -1120,6 +1124,7 @@ body.preloader-active {
     }
     .preloader-logo-v2 {
         height: 32px;
+        width: 120px;
     }
     .progress-text-v2 {
         font-size: 1rem;

@@ -58,7 +58,7 @@
 </div>
 <div style="display:flex; align-items:center; gap:20px;">
 <i class="fa-solid fa-bell" onclick="window.location.href='404.html'" style="font-size:1.2rem; color:var(--text-light); cursor:pointer;"></i>
-<div style="display:flex; align-items:center; gap:10px;">
+<div style="display:flex; align-items:center; gap:10px; cursor:pointer;" onclick="switchTab(event, 'settings')">
 <i class="fa-solid fa-circle-user" style="font-size:2rem; color:var(--primary);"></i>
 <span id="profileNameDisplay" style="font-weight:600; font-size:0.95rem;">Admin User</span>
 </div>
@@ -88,7 +88,7 @@
 </div>
 <div class="dash-card-mega">
 <h3>Quick Actions</h3>
-<div class="dash-stacked-form">
+<div class="dash-stacked-form" style="display: flex; flex-direction: column; gap: 10px;">
 <button class="action-btn action-view" onclick="window.location.href='404.html'" style="padding:10px; text-align:left;" type="button"><i class="fa-solid fa-plus"></i> Create New Invoice</button>
 <button class="action-btn action-view" onclick="window.location.href='404.html'" style="padding:10px; text-align:left;" type="button"><i class="fa-solid fa-user-plus"></i> Invite Client</button>
 <button class="action-btn action-view" onclick="window.location.href='404.html'" style="padding:10px; text-align:left;" type="button"><i class="fa-solid fa-file-export"></i> Export Monthly Report</button>
